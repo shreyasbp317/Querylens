@@ -35,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, histo
             <Database size={16} className="text-white" />
           </div>
           <div>
-            <h1 className="text-white font-bold text-base leading-none">QueryWeaver</h1>
+            <h1 className="text-white font-bold text-base leading-none">QueryLens</h1>
             <p className="text-gray-500 text-[10px] mt-0.5">NL → SQL Builder</p>
           </div>
         </div>
