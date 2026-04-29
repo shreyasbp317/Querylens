@@ -1,0 +1,12 @@
+<div id="tab-saved" class="tab-panel" style="display:none">
+  <div class="panel-header">
+    <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg> Saved Queries</h2>
+    <p><span id="savedCount">{{ saved|length }}</span> saved queries</p>
+  </div>
+  <div class="search-bar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+    <input type="text" id="savedSearch" placeholder="Search saved queries..." oninput="filterSaved()"/>
+  </div>
+  <div id="savedTags" class="tag-filters"></div>
+  <div id="savedList" class="item-list"></div>
+</div>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QueryLens — Natural Language SQL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+      </div>
+      <div><h1>QueryLens</h1><p class="logo-sub">NL → SQL Builder</p></div>
+    </div>
+    <div class="sidebar-conn">
+      <div class="conn-badge"><div class="conn-dot"></div><div><p class="conn-host">prod-db.internal</p><p class="conn-ver">PostgreSQL 15.2</p></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-tab="query" onclick="switchTab('query')">
+        <span class="nav-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Query Builder</span></span>
+      </button>
+      <button class="nav-btn" data-tab="history" onclick="switchTab('history')">
+        <span class="nav-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Query History</span></span>
+        <span class="badge" id="historyBadge">{{ history|length }}</span>
+      </button>
+      <button class="nav-btn" data-tab="saved" onclick="switchTab('saved')">
+        <span class="nav-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg><span>Saved Queries</span></span>
+        <span class="badge" id="savedBadge">{{ saved|length }}</span>
+      </button>
+      <button class="nav-btn" data-tab="schema" onclick="switchTab('schema')">
+        <span class="nav-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Schema Explorer</span></span>
+        <span class="badge">{{ schemas|length }}</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://github.com" target="_blank" class="gh-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg> View on GitHub</a>
+      <div class="user-info"><div class="avatar">JD</div><div><p class="user-name">Jane Doe</p><p class="user-role">Portfolio Project</p></div></div>
+    </div>
+  </aside>
+  <div class="main-area">
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-icon violet"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></div><div><p class="stat-label">TABLES INTROSPECTED</p><p class="stat-value">{{ schemas|length }}</p></div></div>
+      <div class="stat"><div class="stat-icon green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><p class="stat-label">QUERIES RUN</p><p class="stat-value" id="statQueries">{{ success_count }}</p></div></div>
+      <div class="stat"><div class="stat-icon blue"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><p class="stat-label">AVG EXEC TIME</p><p class="stat-value" id="statAvg">{{ avg_exec }}ms</p></div></div>
+      <div class="stat"><div class="stat-icon yellow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div><p class="stat-label">OPENAI MODEL</p><p class="stat-value">GPT-4o</p></div></div>
+    </div>
+    <main class="content" id="mainContent">
+      {% include 'query_builder.html' %}
+      {% include 'query_history.html' %}
+      {% include 'saved_queries.html' %}
+      {% include 'schema_explorer.html' %}
+    </main>
+  </div>
+</div>
+<script>
+const SCHEMAS = {{ schemas | tojson }};
+const INIT_HISTORY = {{ history | tojson }};
+const INIT_SAVED = {{ saved | tojson }};
+</script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
